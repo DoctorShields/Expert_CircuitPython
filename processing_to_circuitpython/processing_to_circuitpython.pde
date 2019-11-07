@@ -13,6 +13,8 @@ int xPos, yPos;
 String xTxt, yTxt;
 int lineHeight = 32;
 String outString;
+long now;
+long lastTime = 0;
 
 void settings() {
   size(w, h);
@@ -21,7 +23,7 @@ void settings() {
 void setup() {
   println("Available serial ports:");
   println(Serial.list());
-  //myPort = new Serial(this, Serial.list()[1], 9600);
+  myPort = new Serial(this, Serial.list()[2], 9600);
   drawBg();
 }
 
@@ -48,6 +50,7 @@ void drawBg() {
 }
 
 void mouseMoved() {
+  now = millis();
   if(mouseX > space && mouseX < w-space*2 && mouseY > space && mouseY < w-space*2) {
     drawBg();
     noCursor();
@@ -57,6 +60,10 @@ void mouseMoved() {
     ellipse(mouseX,mouseY+dotR/2,dotR,dotR);
     outString = xPos + "|" + yPos + "$";
     println(outString);
+    if (now > lastTime + 50) {
+      myPort.write(outString);
+      lastTime = now;
+    }
   }
 }
 

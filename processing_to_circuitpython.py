@@ -7,9 +7,11 @@ from adafruit_motor import servo
 #from lcd.i2c_pcf8574_interface import I2CPCF8574Interface
 
 #lcd = LCD(I2CPCF8574Interface(0x27), num_rows=2, num_cols=16)
+# TX is white; RX is green
 uart = busio.UART(board.TX, board.RX, baudrate=9600)
 
-pinArray = [board.D2, board.D3]
+pinArray = [board.D8, board.D9]
+
 pwmList = []
 for pin in pinArray:
     pwmList.append(pulseio.PWMOut(pin, duty_cycle=2**15,frequency=50))
@@ -33,7 +35,7 @@ while True:
             if len(arr) == 2:
                 arr[0] = int(arr[0])
                 arr[1] = int(arr[1])
-                for i in range(0,1):
+                for i in range(0,2):
                     servoList[i].angle = arr[i];
                 print(arr)
             s = ""
@@ -45,7 +47,6 @@ while True:
         else:
             s += num
         time.sleep(.01)
-
 
 
 
